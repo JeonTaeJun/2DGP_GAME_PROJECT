@@ -9,18 +9,19 @@ class skeleton :
         self.image = load_image('skelton.png')
         self.frame = 0
         self.direction =0
-        self.t=0.0
         self.x, self.y = random.randint(100, 1280), random.randint(100, 1024)
-        self.sx, self.sy = self.x, self.y
+        self.dx =0
+        self.dy =0
     def draw(self):
         self.image.clip_draw(self.frame*30,self.direction*56,30,56,self.x,self.y,40,50)
 
-    def update(self, player_x, player_y):
-        self.t += 0.005
-        self.x = (1 - self.t) * self.sx + self.t * player_x
-        self.y = (1 - self.t) * self.sy + self.t * player_y
-        if player_x > self.sx:
-            self.direction=0
-        elif player_x < self.sx:
-            self.direction = 1
+    def chase_update(self, player_x, player_y):
+        self.dx, self.dy = ((player_x-self.x)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2),
+                          (player_y-self.y)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2))
 
+        self.x+=self.dx*2
+        self.y+=self.dy*2
+        if player_x > self.x:
+            self.direction = 0
+        elif player_x < self.y:
+            self.direction = 1

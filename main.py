@@ -17,9 +17,9 @@ while running:
     player.update()
     player.draw()
     for skelton in skeltons:
-        skelton.update(player.player_x, player.player_y)
-    for skelton in skeltons:
          skelton.draw()
+    for skelton in skeltons:
+        skelton.chase_update(player.player_x, player.player_y)
     update_canvas()
     for skelton in skeltons:
         skelton.frame=(skelton.frame + 1) % 6
