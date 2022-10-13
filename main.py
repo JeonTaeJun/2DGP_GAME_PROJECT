@@ -8,7 +8,7 @@ ground = load_image('MAP1.png')
 pico2d.resize_canvas(1280, 1024)
 
 skeltons = [enemies.skeleton() for i in range(11)]
-
+zombies = [enemies.zombie() for i in range(11)]
 player = player.my_player()
 
 while running:
@@ -20,9 +20,15 @@ while running:
          skelton.draw()
     for skelton in skeltons:
         skelton.chase_update(player.player_x, player.player_y)
+    for zombie in zombies:
+         zombie.draw()
+    for zombie in zombies:
+        zombie.chase_update(player.player_x, player.player_y)
     update_canvas()
     for skelton in skeltons:
         skelton.frame=(skelton.frame + 1) % 6
+    for zombie in zombies:
+        zombie.frame = (zombie.frame + 1) % 6
     delay(0.05)
 
 

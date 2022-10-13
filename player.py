@@ -13,16 +13,16 @@ class my_player:
     def draw(self):
         player_handle.player_handle()
         if player_handle.direction == 1:
-            self.character.clip_draw(0, player_handle.direction * 35, 27, 35, self.player_x, self.player_y, 50, 50)
+            self.character.clip_draw(0, player_handle.direction * 35, 27, 35, self.player_x, self.player_y, 40, 40)
 
         elif player_handle.direction == 0:
-            self.character.clip_draw(0, player_handle.direction * 35, 27, 35, self.player_x, self.player_y, 50, 50)
+            self.character.clip_draw(0, player_handle.direction * 35, 27, 35, self.player_x, self.player_y, 40, 40)
 
         elif player_handle.direction == 3:
-            self.character.clip_draw(self.frame * 28, player_handle.direction * 35, 27, 35, self.player_x, self.player_y, 50, 50)
+            self.character.clip_draw(self.frame * 28, player_handle.direction * 35, 27, 35, self.player_x, self.player_y, 40, 40)
 
         elif player_handle.direction == 2:
-            self.character.clip_draw(self.frame * 28, player_handle.direction * 35, 27, 35, self.player_x, self.player_y, 50, 50)
+            self.character.clip_draw(self.frame * 28, player_handle.direction * 35, 27, 35, self.player_x, self.player_y, 40, 40)
 
     def update(self):
         self.frame = (self.frame + 1) % 7
