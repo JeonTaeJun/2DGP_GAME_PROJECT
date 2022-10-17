@@ -62,10 +62,12 @@ def handle_events():
                 move_x -= 1
                 direction = 0
 
-skeltons = None
-zombies =None
+skeltons = []
+zombies =[]
 at = None
 num=1
+z_list_size=0
+s_list_size=0
 open_canvas()
 def enter():
     global skeltons
@@ -74,10 +76,12 @@ def enter():
     global MAP
     global at
     global num
+    global z_list_size
+    global s_list_size
     global ax
     global ay
-    skeltons = [enemies.skeleton() for i in range(10)]
-    zombies = [enemies.zombie() for i in range(10)]
+    skeltons = [enemies.skeleton() for i in range(s_list_size)]
+    zombies = [enemies.zombie() for i in range(z_list_size)]
     MAP = Map.ground()
     player = my_ch.my_player()
     at = [attack.basic_attack() for i in range (num)]
@@ -96,19 +100,34 @@ def exit():
 
 
 time=0.0
-
+time_s=0.0
+time_z=0.0
 def update():
     global time
+    global time_s
+    global time_z
     global num
-    global ax
-    global ay
+
+    global z_list_size
+    global s_list_size
     time += 0.05
+    time_s +=0.01
+    time_z +=0.01
     if time > 1.5:
         time = 0
         ax.append(player.player_x)
         ay.append(player.player_y)
         num += 1
         at.append(attack.basic_attack())
+    if time_s > 1.0:
+        time_s=0
+        s_list_size+=1
+        skeltons.append(enemies.skeleton())
+    if time_z > 1.0:
+        time_z=0
+        z_list_size+=1
+        zombies.append(enemies.zombie())
+
     player.update(move_x,move_y)
 
     for ats in at:
@@ -117,8 +136,6 @@ def update():
         skelton.chase_update(player.player_x, player.player_y)
     for zombie in zombies:
         zombie.chase_update(player.player_x, player.player_y)
-        if zombie.HP<0:
-            del skelton
     for zombie in zombies:
         if collide.collide_player(player,zombie)==True:
             player.HP-=1
@@ -132,7 +149,7 @@ def update():
             s=skeltons[i]
             a=at[j]
             if collide.collide_player(s,a) == True:
-                del a
+                del at[j]
                 skeltons[i].HP -= 10
                 if skeltons[i].HP <= 0:
                     ds_list.append(i)
@@ -147,7 +164,7 @@ def update():
             z = zombies[i]
             a = at[j]
             if collide.collide_player(z, a) == True:
-                del a
+                del at[j]
                 zombies[i].HP -= 10
                 if zombies[i].HP <= 0:
                     dz_list.append(i)
