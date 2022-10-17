@@ -5,15 +5,22 @@ import math
 
 
 class skeleton :
+    image = None
     def __init__(self):
-        self.image = load_image('skelton.png')
         self.frame = 0
         self.direction =0
-        self.x, self.y = random.randint(100, 1280), random.randint(100, 1024)
+        self.x, self.y = random.randint(100, 1240) , random.randint(1024, 1124)
         self.dx =0
         self.dy =0
+        self.HP = 20
+        if skeleton.image == None:
+            skeleton.image = load_image('skelton.png')
+    def get_bb(self):
+        return self.x-10, self.y-10, self.x+10, self.y+10
+
     def draw(self):
         self.image.clip_draw(self.frame*30,self.direction*56,30,56,self.x,self.y,40,50)
+        draw_rectangle(*self.get_bb())
 
     def chase_update(self, player_x, player_y):
         self.dx, self.dy = ((player_x-self.x)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2),
@@ -25,17 +32,24 @@ class skeleton :
             self.direction = 0
         elif player_x < self.y:
             self.direction = 1
+        self.frame = (self.frame + 1) % 6
 class zombie:
+    image = None
     def __init__(self):
-        self.image = load_image('zombie1.png')
         self.frame = 0
         self.direction =0
-        self.x, self.y = random.randint(100, 1280), random.randint(100, 1024)
+        self.x, self.y = random.randint(1240, 1340) , random.randint(0, 1024)
         self.dx =0
         self.dy =0
+        self.HP=20
+        if zombie.image == None:
+            zombie.image = load_image('zombie1.png')
     def draw(self):
         self.image.clip_draw(self.frame*31,self.direction*73,31,73,self.x,self.y,40,50)
+        draw_rectangle(*self.get_bb())
 
+    def get_bb(self):
+        return (self.x-10,self.y-10,self.x+10,self.y+10)
     def chase_update(self, player_x, player_y):
         self.dx, self.dy = ((player_x-self.x)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2),
                           (player_y-self.y)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2))
@@ -46,3 +60,4 @@ class zombie:
             self.direction = 0
         elif player_x < self.y:
             self.direction = 1
+        self.frame = (self.frame + 1) % 6
