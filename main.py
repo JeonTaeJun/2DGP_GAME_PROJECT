@@ -64,7 +64,7 @@ def handle_events():
 
 skeltons = []
 zombies =[]
-at = None
+at = []
 num=1
 z_list_size=0
 s_list_size=0
@@ -111,8 +111,8 @@ def update():
     global z_list_size
     global s_list_size
     time += 0.05
-    time_s +=0.01
-    time_z +=0.01
+    time_s +=0.05
+    time_z +=0.05
     if time > 1.5:
         time = 0
         ax.append(player.player_x)
@@ -142,6 +142,12 @@ def update():
     for skelton in skeltons:
         if collide.collide_player(player,skelton)==True:
             player.HP-=1
+
+    for i in range(len(skeltons)):
+        for j in range(len(zombies)):
+            if collide.collide_player(skeltons[i], zombies[j]) == True:
+                skeltons[i].x-=skeltons[i].dx*2
+
 
     ds_list=[]
     for i in range(len(skeltons)):

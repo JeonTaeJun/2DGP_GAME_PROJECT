@@ -58,6 +58,6 @@ class zombie:
         self.y+=self.dy*2
         if player_x > self.x:
             self.direction = 0
-        elif player_x < self.y:
+        elif player_x < self.x:
             self.direction = 1
         self.frame = (self.frame + 1) % 6
