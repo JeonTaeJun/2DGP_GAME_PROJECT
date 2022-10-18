@@ -16,10 +16,10 @@ class skeleton :
         if skeleton.image == None:
             skeleton.image = load_image('skelton.png')
     def get_bb(self):
-        return self.x-10, self.y-10, self.x+10, self.y+10
+        return self.x-15, self.y-15, self.x+15, self.y+15
 
     def draw(self):
-        self.image.clip_draw(self.frame*30,self.direction*56,30,56,self.x,self.y,40,50)
+        self.image.clip_draw(self.frame*30,self.direction*56,30,56,self.x,self.y,50,60)
         draw_rectangle(*self.get_bb())
 
     def chase_update(self, player_x, player_y):
@@ -41,15 +41,15 @@ class zombie:
         self.x, self.y = random.randint(1240, 1340) , random.randint(0, 1024)
         self.dx =0
         self.dy =0
-        self.HP=20
+        self.HP=30
         if zombie.image == None:
             zombie.image = load_image('zombie1.png')
     def draw(self):
-        self.image.clip_draw(self.frame*31,self.direction*73,31,73,self.x,self.y,40,50)
+        self.image.clip_draw(self.frame*31,self.direction*73,31,73,self.x,self.y,60,80)
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return (self.x-10,self.y-10,self.x+10,self.y+10)
+        return (self.x-15,self.y-20,self.x+15,self.y+20)
     def chase_update(self, player_x, player_y):
         self.dx, self.dy = ((player_x-self.x)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2),
                           (player_y-self.y)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2))

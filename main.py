@@ -4,10 +4,10 @@ import my_ch
 import enemies
 import collide
 import framework
-import title
+import gameover
 import attack
 direction=0
-up_down_dir = 0
+up_down_dir = 2
 move_x = 0
 move_y = 0
 def handle_events():
@@ -61,10 +61,13 @@ def handle_events():
             elif event.key == SDLK_RIGHT:
                 move_x -= 1
                 direction = 0
-
+time = 0
+time_s = 0
+time_z = 0
 skeltons = []
 zombies =[]
-at = []
+at = None
+at_list = []
 num=1
 z_list_size=0
 s_list_size=0
@@ -74,19 +77,23 @@ def enter():
     global zombies
     global player
     global MAP
-    global at
+    global at_list
     global num
     global z_list_size
     global s_list_size
-    global ax
-    global ay
+    global at
+    global time
+    global time_s
+    global time_z
     skeltons = [enemies.skeleton() for i in range(s_list_size)]
     zombies = [enemies.zombie() for i in range(z_list_size)]
     MAP = Map.ground()
     player = my_ch.my_player()
-    at = [attack.basic_attack() for i in range (num)]
-    ax = [player.player_x, ]
-    ay = [player.player_y, ]
+    at_list = []
+    time = 1.0
+    time_s = 0.0
+    time_z = 0.0
+
 def exit():
     global skeltons
     global zombies
@@ -99,39 +106,44 @@ def exit():
     del player
 
 
-time=0.0
-time_s=0.0
-time_z=0.0
+
 def update():
     global time
     global time_s
     global time_z
     global num
+    global at_list
+    global at
 
-    global z_list_size
-    global s_list_size
-    time += 0.05
+    time += 0.15
     time_s +=0.05
     time_z +=0.05
-    if time > 1.5:
+    if time > 1.0:
         time = 0
-        ax.append(player.player_x)
-        ay.append(player.player_y)
-        num += 1
-        at.append(attack.basic_attack())
+        at = attack.basic_attack()
+        at.player_x=player.player_x
+        at.player_y=player.player_y
+        if direction==2 or 0:
+            at.dir=1
+        elif direction == 0:
+            at.dir = 1
+        elif direction == 3:
+            at.dir=-1
+        elif direction == 1:
+            at.dir=-1
+        at_list.append(at)
+
     if time_s > 1.0:
         time_s=0
-        s_list_size+=1
         skeltons.append(enemies.skeleton())
     if time_z > 1.0:
         time_z=0
-        z_list_size+=1
         zombies.append(enemies.zombie())
 
     player.update(move_x,move_y)
 
-    for ats in at:
-        ats.update()
+    for at in at_list:
+        at.update()
     for skelton in skeltons:
         skelton.chase_update(player.player_x, player.player_y)
     for zombie in zombies:
@@ -150,46 +162,57 @@ def update():
 
 
     ds_list=[]
+    da_list=[]
     for i in range(len(skeltons)):
-        for j in range(len(at)):
+        for j in range(len(at_list)):
             s=skeltons[i]
-            a=at[j]
+            a=at_list[j]
             if collide.collide_player(s,a) == True:
-                del at[j]
+                da_list.append(j)
                 skeltons[i].HP -= 10
                 if skeltons[i].HP <= 0:
                     ds_list.append(i)
-
+    da_list = list(set(da_list))
+    ds_list = list(set(ds_list))
+    for da in da_list:
+        del at_list[da]
     for ds in ds_list:
         del skeltons[ds]
 
+    da_list = []
     dz_list = []
 
     for i in range(len(zombies)):
-        for j in range(len(at)):
+        for j in range(len(at_list)):
             z = zombies[i]
-            a = at[j]
+            a = at_list[j]
             if collide.collide_player(z, a) == True:
-                del at[j]
+                da_list.append(j)
                 zombies[i].HP -= 10
                 if zombies[i].HP <= 0:
                     dz_list.append(i)
 
+    da_list = list(set(da_list))
+    dz_list = list(set(dz_list))
+
+    for da in da_list:
+        del at_list[da]
     for dz in dz_list:
         del zombies[dz]
 
 
     print(player.HP)
     if player.HP < 0:
-        framework.change_state(title)
+        framework.change_state(gameover)
 
 def draw():
     global time
     global num
+    global at
     MAP.draw()
     player.draw(direction,move_x,move_y)
-    for ats in at:
-        ats.draw(ax[num-1],ay[num-1],direction)
+    for at in at_list:
+        at.draw()
     for skelton in skeltons:
         skelton.draw()
     for zombie in zombies:
