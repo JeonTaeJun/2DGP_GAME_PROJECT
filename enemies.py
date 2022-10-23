@@ -2,7 +2,7 @@ from pico2d import *
 import random
 import os
 import math
-
+import main
 
 class skeleton :
     image = None
@@ -26,8 +26,9 @@ class skeleton :
         self.dx, self.dy = ((player_x-self.x)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2),
                           (player_y-self.y)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2))
 
-        self.x+=self.dx*2
-        self.y+=self.dy*2
+        self.x=self.dx-main.player.dx
+        self.y=self.dy-main.player.dy
+
         if player_x > self.x:
             self.direction = 0
         elif player_x < self.y:
