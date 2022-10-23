@@ -6,15 +6,9 @@ import collide
 import framework
 import gameover
 import attack
-direction=0
-up_down_dir = 2
-move_x = 0
-move_y = 0
 def handle_events():
-    global direction
-    global up_down_dir
-    global move_x
-    global move_y
+
+    global player
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -23,56 +17,40 @@ def handle_events():
             if event.key == SDLK_ESCAPE:
                 framework.quit()
             elif event.key == SDLK_LEFT:
-                move_x -= 1
-                direction = 3
-                up_down_dir = 1
+                player.dx = -10
+                player.dir = 3
             elif event.key == SDLK_RIGHT:
-                move_x += 1
-                direction = 2
-                up_down_dir = 2
+                player.dx = 10
+                player.dir = 2
             elif event.key == SDLK_UP:
-                move_y += 1
-                if up_down_dir == 1:
-                    direction = 3
-                elif up_down_dir == 2:
-                    direction = 2
+                player.dy = 10
             elif event.key == SDLK_DOWN:
-                move_y -= 1
-                if up_down_dir == 1:
-                    direction = 3
-                elif up_down_dir == 2:
-                    direction = 2
+                player.dy = -10
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_UP:
-                move_y -= 1
-                if up_down_dir == 1:
-                    direction = 1
-                else:
-                    direction = 0
+                player.dy = 0
             elif event.key == SDLK_DOWN:
-                move_y += 1
-                if up_down_dir == 1:
-                    direction = 1
-                else:
-                    direction = 0
+                player.dy = 0
+
             elif event.key == SDLK_LEFT:
-                move_x += 1
-                direction = 1
+                player.dx = 0
+                player.dir=3
             elif event.key == SDLK_RIGHT:
-                move_x -= 1
-                direction = 0
+                player.dx = 0
+                player.dir=2
 time = 0
 time_s = 0
 time_z = 0
 skeltons = []
 zombies =[]
+player=None
 at = None
 at_list = []
-num=1
-z_list_size=0
-s_list_size=0
+num = 1
 open_canvas()
 def enter():
+    mapset = [[-1280, 1280], [0, 1280], [1280, 1280], [-1280, 0], [0, 0], [1280, 0], [-1280, -1280], [0, -1280],
+             [1280, -1280]]
     global skeltons
     global zombies
     global player
@@ -85,9 +63,15 @@ def enter():
     global time
     global time_s
     global time_z
+    global MAPS
+    z_list_size = 0
+    s_list_size = 0
     skeltons = [enemies.skeleton() for i in range(s_list_size)]
     zombies = [enemies.zombie() for i in range(z_list_size)]
-    MAP = Map.ground()
+    MAPS = [Map.ground()for i in range(9)]
+    for i in range(9):
+        MAPS[i].x=mapset[i][0]
+        MAPS[i].y=mapset[i][1]
     player = my_ch.my_player()
     at_list = []
     time = 1.0
@@ -115,22 +99,22 @@ def update():
     global at_list
     global at
 
-    time += 0.15
-    time_s +=0.05
-    time_z +=0.05
+    for i in range(9):
+        MAPS[i].update()
+    player.update()
+    time += 0.1
+    time_s += 0.05
+    time_z += 0.05
     if time > 1.0:
         time = 0
         at = attack.basic_attack()
         at.player_x=player.player_x
         at.player_y=player.player_y
-        if direction==2 or 0:
-            at.dir=1
-        elif direction == 0:
+        if player.dir ==3:
+            at.dir=-1
+        elif player.dir ==2:
             at.dir = 1
-        elif direction == 3:
-            at.dir=-1
-        elif direction == 1:
-            at.dir=-1
+
         at_list.append(at)
 
     if time_s > 1.0:
@@ -139,8 +123,6 @@ def update():
     if time_z > 1.0:
         time_z=0
         zombies.append(enemies.zombie())
-
-    player.update(move_x,move_y)
 
     for at in at_list:
         at.update()
@@ -209,16 +191,18 @@ def draw():
     global time
     global num
     global at
-    MAP.draw()
-    player.draw(direction,move_x,move_y)
+    clear_canvas()
+    for i in range(9):
+        MAPS[i].draw()
+    player.draw()
     for at in at_list:
         at.draw()
     for skelton in skeltons:
         skelton.draw()
     for zombie in zombies:
         zombie.draw()
-    update_canvas()
 
+    update_canvas()
 def pause():
     pass
 
