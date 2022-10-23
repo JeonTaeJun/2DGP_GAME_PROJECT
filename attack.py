@@ -5,7 +5,7 @@ class basic_attack:
         self.attack=load_image('at.png')
         self.ax=0
         self.power=10
-        self.player_x=my_ch
+        self.player_x=0
         self.player_y=0
         self.dir=0
         self.speed=25
