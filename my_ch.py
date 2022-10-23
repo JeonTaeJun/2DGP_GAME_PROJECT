@@ -5,36 +5,36 @@ class my_player:
         self.character = load_image('characters_.png')
         self.player_x = 1280 // 2
         self.player_y = 1024 // 2
+        self.dx=0
+        self.dy=0
+        self.dir =0
         self.frame = 0
         self.HP = 100
     def get_bb(self):
         return self.player_x-10,self.player_y-15,self.player_x+10,self.player_y+15
-    def draw(self,direction,move_x,move_y):
-        if direction == 1:
-            self.character.clip_draw(0, direction * 35, 27, 35, self.player_x, self.player_y, 60, 60)
+    def draw(self):
 
-        elif direction == 0:
-            self.character.clip_draw(0, direction * 35, 27, 35, self.player_x, self.player_y, 60, 60)
+        if self.dx==0 and self.dy==0:
+            if self.dir ==2: #오른쪽
+                self.character.clip_draw(0, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
+            else: #왼쪽
+                self.character.clip_draw(0, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
 
-        elif direction == 3:
-            self.character.clip_draw(self.frame * 28, direction * 35, 27, 35, self.player_x, self.player_y, 60, 60)
+        elif self.dx>0:
+            self.character.clip_draw(self.frame * 28, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
 
-        elif direction == 2:
-            self.character.clip_draw(self.frame * 28, direction * 35, 27, 35, self.player_x, self.player_y, 60, 60)
+        elif self.dx<0:
+            self.character.clip_draw(self.frame * 28, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
+
+        elif self.dy!=0:
+            if self.dir ==3:
+                self.character.clip_draw(self.frame * 28, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
+            else:
+                self.character.clip_draw(self.frame * 28, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
         draw_rectangle(*self.get_bb())
 
-    def update(self,move_x,move_y):
+    def update(self):
         self.frame = (self.frame + 1) % 7
 
-        if self.player_x < 0:
-            self.player_x += 15
-        elif self.player_x > 1280:
-            self.player_x -= 15
-
-        if self.player_y < 0:
-            self.player_y += 15
-        elif self.player_y > 1000:
-            self.player_y -= 15
-
-        self.player_x += move_x * 10
-        self.player_y += move_y * 10
+        #self.player_x += self.dx
+        #self.player_y += self.dy
