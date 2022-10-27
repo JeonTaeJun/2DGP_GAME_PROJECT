@@ -35,6 +35,5 @@ class my_player:
 
     def update(self):
         self.frame = (self.frame + 1) % 7
-
         #self.player_x += self.dx
         #self.player_y += self.dy

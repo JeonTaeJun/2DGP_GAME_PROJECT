@@ -2,6 +2,8 @@ from pico2d import *
 import random
 import os
 import math
+
+import game_world
 import main
 import Map
 class skeleton :
@@ -22,19 +24,22 @@ class skeleton :
         self.image.clip_draw(self.frame*30,self.direction*56,30,56,self.x,self.y,50,60)
         draw_rectangle(*self.get_bb())
 
-    def chase_update(self, player_x, player_y):
-        self.dx, self.dy = ((player_x - self.x) / math.sqrt((player_x - self.x) ** 2 + (player_y - self.y) ** 2),
-                            (player_y - self.y) / math.sqrt((player_x - self.x) ** 2 + (player_y - self.y) ** 2))
+    def update(self):#, player_x, player_y):
+        self.dx, self.dy = (( main.player.player_x - self.x) / math.sqrt((main.player.player_x - self.x) ** 2 + (main.player.player_y - self.y) ** 2),
+                            (main.player.player_y - self.y) / math.sqrt((main.player.player_x - self.x) ** 2 + (main.player.player_y - self.y) ** 2))
 
         self.x += self.dx * 2
         self.y += self.dy * 2
-        self.x -=main.player.dx
+        self.x -= main.player.dx
         self.y -= main.player.dy
-        if player_x > self.x:
+        if 640 > self.x:
             self.direction = 0
-        elif player_x < self.y:
+        elif 640 < self.x:
             self.direction = 1
         self.frame = (self.frame + 1) % 6
+        if self.HP < 0:
+            game_world.remove_object(self)
+
 class zombie:
     image = None
     def __init__(self):
@@ -52,16 +57,18 @@ class zombie:
 
     def get_bb(self):
         return (self.x-15,self.y-20,self.x+15,self.y+20)
-    def chase_update(self, player_x, player_y):
-        self.dx, self.dy = ((player_x-self.x)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2),
-                          (player_y-self.y)/math.sqrt((player_x-self.x)** 2+(player_y-self.y) ** 2))
+    def update(self):#, player_x, player_y):
+        self.dx, self.dy = ((main.player.player_x-self.x)/math.sqrt((main.player.player_x-self.x)** 2+(main.player.player_y-self.y) ** 2),
+                          (main.player.player_y-self.y)/math.sqrt((main.player.player_x-self.x)** 2+(main.player.player_y-self.y) ** 2))
 
         self.x+=self.dx*2
         self.y+=self.dy*2
         self.x -= main.player.dx
         self.y -= main.player.dy
-        if player_x > self.x:
+        if 640 > self.x:
             self.direction = 0
-        elif player_x < self.x:
+        elif 640 < self.x:
             self.direction = 1
         self.frame = (self.frame + 1) % 6
+        if self.HP <0:
+            game_world.remove_object(self)

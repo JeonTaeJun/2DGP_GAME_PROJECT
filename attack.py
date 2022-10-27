@@ -1,22 +1,23 @@
 from pico2d import *
-import my_ch
+
 class basic_attack:
     def __init__(self):
-        self.attack=load_image('at.png')
+        self.attack=load_image('nomal_at.png')
         self.ax=0
         self.power=10
-        self.player_x=0
-        self.player_y=0
+        self.x=640
+        self.y=512
+        self.dx=0
+        self.dy=0
         self.dir=0
         self.speed=25
 
     def get_bb(self):
-        return self.player_x + self.dir*self.ax - 4, self.player_y - 4, self.player_x + self.dir*self.ax + 4, self.player_y + 4
+        return self.x + self.dir*self.ax - 4, self.y - 4, self.x + self.dir*self.ax + 4, self.y + 4
     def draw(self):
-        self.attack.draw(self.player_x + self.dir*self.ax, self.player_y, 20, 20)
+        self.attack.clip_draw(0,self.dir*30,170,30,self.x +100+ self.dir, self.y)
         draw_rectangle(*self.get_bb())
 
 
     def update(self):
-        self.ax += self.speed
-
+        pass
