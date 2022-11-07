@@ -1,7 +1,7 @@
 from pico2d import *
 
 import framework
-import main
+import play_state
 
 image = None
 
@@ -26,7 +26,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
-            framework.change_state(main)
+            framework.change_state(play_state)
 
 def draw():
     clear_canvas()
