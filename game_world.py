@@ -1,8 +1,9 @@
 # layer 0: Background
-# layer 1: player
-# layer 2: zombie
-# layer 3: skeleton
-objects = [[],[],[],[]]
+# layer 1: at
+# layer 2: player
+# layer 3: monster
+
+objects = [[], [], [], []]
 def add_object(o, layer):
     objects[layer].append(o)
 
