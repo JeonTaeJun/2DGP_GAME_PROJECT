@@ -1,5 +1,8 @@
 from pico2d import*
-
+import collide
+import game_world
+import framework
+import gameover
 class my_player:
     def __init__(self):
         self.character = load_image('characters_.png')
@@ -35,5 +38,13 @@ class my_player:
 
     def update(self):
         self.frame = (self.frame + 1) % 7
+
+        for i in range(len(game_world.objects[3])):
+            if collide.collide_player(self,game_world.objects[3][i]):
+                self.HP-=game_world.objects[3][i].power
+        print(self.HP)
+
+        if self.HP<0:
+            framework.change_state(gameover)
         #self.player_x += self.dx
         #self.player_y += self.dy
