@@ -1,5 +1,5 @@
 from pico2d import *
-import main
+import play_state
 
 class ground:
     def __init__(self):
@@ -10,8 +10,8 @@ class ground:
         self.hight = 1024
 
     def update(self):
-        self.x -= main.player.dx
-        self.y -= main.player.dy
+        self.x -= play_state.player.dx
+        self.y -= play_state.player.dy
 
         if (self.x < -1920):
             self.x += 3840
