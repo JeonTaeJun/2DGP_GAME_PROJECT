@@ -15,6 +15,7 @@ def random_deg():
     return deg
 class skeleton_many :
     image = None
+    die_image = None
     def __init__(self):
         self.frame = 0
         self.direction =0
@@ -23,16 +24,23 @@ class skeleton_many :
         self.dx = 0
         self.dy = 0
         self.speed = 15
-        self.HP = 20
+        self.HP = 15
         self.power = 5
+        self.time_die =0
+        self.die_state=False
         if skeleton_many.image == None:
             skeleton_many.image = load_image('skelton.png')
+        if skeleton_many.die_image == None:
+            skeleton_many.die_image = load_image('die.png')
     def get_bb(self):
         return self.x-15, self.y-15, self.x+15, self.y+15
 
     def draw(self):
-        self.image.clip_draw(self.frame*30,self.direction*56,30,56,self.x,self.y,50,60)
-        draw_rectangle(*self.get_bb())
+        if self.die_state == False:
+            self.image.clip_draw(self.frame * 30, self.direction * 56, 30, 56, self.x, self.y, 50, 60)
+        elif self.die_state == True:
+            self.die_image.clip_draw(0, 0, 81, 81, self.x, self.y, 50, 60)
+        #draw_rectangle(*self.get_bb())
 
     def update(self):
         self.y += self.speed
@@ -44,29 +52,47 @@ class skeleton_many :
             self.direction = 1
         self.frame = (self.frame + 1) % 6
 
-        if self.HP<0:
+        if self.HP < 0:
+            if self.HP < 0:
+                self.die_state = True
+                self.time_die += 1
+                if self.time_die > 5:
+                    game_world.remove_object(self)
+
+        if self.y > 1300:
             game_world.remove_object(self)
+
+
 
 class skeleton :
     image = None
+    die_image = None
     def __init__(self):
         self.deg = random_deg()
         self.frame = 0
         self.direction =0
-        self.x, self.y = play_state.player.player_x+(math.cos(math.radians(self.deg))*800),\
-                         play_state.player.player_y+(math.sin(math.radians(self.deg))*800)
+        self.x, self.y = play_state.player.player_x+(math.cos(math.radians(self.deg))*700),\
+                         play_state.player.player_y+(math.sin(math.radians(self.deg))*650)
         self.dx = 0
         self.dy = 0
-        self.HP = 20
+        self.HP = 15
         self.power = 5
-        if skeleton.image == None:
+        self.time_die =0
+        self.die_state=False
+        if skeleton.image == None :
             skeleton.image = load_image('skelton.png')
+        if skeleton.die_image == None :
+            skeleton.die_image = load_image('die.png')
+
     def get_bb(self):
         return self.x-15, self.y-15, self.x+15, self.y+15
 
     def draw(self):
-        self.image.clip_draw(self.frame*30,self.direction*56, 30, 56, self.x, self.y, 50, 60)
-        draw_rectangle(*self.get_bb())
+        if self.die_state ==False:
+            self.image.clip_draw(self.frame*30,self.direction*56, 30, 56, self.x, self.y, 50, 60)
+        elif self.die_state==True:
+            self.die_image.clip_draw(0, 0, 81, 81, self.x, self.y, 50, 60)
+        #draw_rectangle(*self.get_bb())
 
     def update(self):#, player_x, player_y):
         self.dx, self.dy = (( play_state.player.player_x - self.x) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2),
@@ -83,24 +109,36 @@ class skeleton :
         self.frame = (self.frame + 1) % 6
 
         if self.HP<0:
-            game_world.remove_object(self)
+            self.die_state=True
+            self.time_die+=1
+            if self.time_die>5:
+                game_world.remove_object(self)
+
 class zombie:
     image = None
+    die_image = None
     def __init__(self):
         self.deg = random_deg()
         self.frame = 0
         self.direction = 0
-        self.x, self.y = play_state.player.player_x+(math.cos(math.radians(self.deg))*800),\
-                         play_state.player.player_y+(math.sin(math.radians(self.deg))*800)
+        self.x, self.y = play_state.player.player_x+(math.cos(math.radians(self.deg))*700),\
+                         play_state.player.player_y+(math.sin(math.radians(self.deg))*650)
         self.dx = 0
         self.dy =0
         self.HP= 30
         self.power = 10
+        self.time_die =0
+        self.die_state=False
         if zombie.image == None:
             zombie.image = load_image('zombie1.png')
+        if zombie.die_image == None :
+            zombie.die_image = load_image('die.png')
     def draw(self):
-        self.image.clip_draw(self.frame*31,self.direction*73,31,73,self.x,self.y,60,80)
-        draw_rectangle(*self.get_bb())
+        if self.die_state == False:
+            self.image.clip_draw(self.frame*31,self.direction*73,31,73,self.x,self.y,60,80)
+        elif self.die_state == True:
+            self.die_image.clip_draw(0, 0, 81, 81, self.x, self.y, 50, 60)
+        #draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return (self.x-15,self.y-20,self.x+15,self.y+20)
@@ -119,4 +157,58 @@ class zombie:
         self.frame = (self.frame + 1) % 6
 
         if self.HP<0:
-            game_world.remove_object(self)
+            if self.HP < 0:
+                self.die_state = True
+                self.time_die += 1
+                if self.time_die > 5:
+                    game_world.remove_object(self)
+
+class bat :
+    image = None
+    die_image = None
+    def __init__(self):
+        self.deg = random_deg()
+        self.frame = 0
+        self.direction =0
+        self.x, self.y = play_state.player.player_x+(math.cos(math.radians(self.deg))*700),\
+                         play_state.player.player_y+(math.sin(math.radians(self.deg))*650)
+        self.dx = 0
+        self.dy = 0
+        self.HP = 150
+        self.power = 20
+        self.time_die =0
+        self.die_state=False
+        if bat.image == None :
+            bat.image = load_image('bat.png')
+        if bat.die_image == None :
+            bat.die_image = load_image('die.png')
+
+    def get_bb(self):
+        return self.x-20, self.y-30, self.x+20, self.y+30
+
+    def draw(self):
+        if self.die_state ==False:
+            self.image.clip_draw(self.frame*134,self.direction*170, 134, 170, self.x, self.y, 90, 120)
+        elif self.die_state==True:
+            self.die_image.clip_draw(0, 0, 81, 81, self.x, self.y, 50, 60)
+        #draw_rectangle(*self.get_bb())
+
+    def update(self):#, player_x, player_y):
+        self.dx, self.dy = (( play_state.player.player_x - self.x) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2),
+                            (play_state.player.player_y - self.y) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2))
+
+        self.x += self.dx * 2
+        self.y += self.dy * 2
+        self.x -= play_state.player.dx
+        self.y -= play_state.player.dy
+        if 640 > self.x:
+            self.direction = 1
+        elif 640 < self.x:
+            self.direction = 0
+        self.frame = (self.frame + 1) % 6
+
+        if self.HP<0:
+            self.die_state=True
+            self.time_die+=1
+            if self.time_die>5:
+                game_world.remove_object(self)

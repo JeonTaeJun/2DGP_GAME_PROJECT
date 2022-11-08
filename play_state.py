@@ -40,14 +40,10 @@ def handle_events(): # dir=3 왼쪽 dir =4 오른쪽
                 player.dx = 0
                 player.dir=2
 
-time_s = 0
-time_z = 0
-
 player = None
 MAP = None
 skeleton = None
 zombie = None
-at =None
 skeleton_many = None
 #at = None
 open_canvas()
@@ -57,10 +53,7 @@ def enter():
     global player
     global MAP
     global z_list_size
-    global time_s
-    global time_z
     global MAPS
-    global at
     global skeleton_many
     if player == None:
         player = my_ch.my_player()
@@ -75,14 +68,16 @@ def enter():
     game_world.add_object(attack.circle_attack(),1)
     game_world.add_object(enemies.zombie(), 3)
     game_world.add_object(enemies.skeleton(), 3)
-    time_s = 0.0
-    time_z = 0.0
 
 def exit():
     game_world.clear()
 
+
+time_s = 0
+time_z = 0
 time_a=0
 time_m_s =0
+time_a_t =0
 def update():
     global time_s
     global time_z
@@ -91,10 +86,16 @@ def update():
     global skeleton_many
     global zombies
     global skeleton
-    time_s += 0.02
-    time_z += 0.02
+    global time_a_t
+    time_s += 0.04
+    time_z += 0.04
     time_a += 0.05
     time_m_s += 0.01
+    time_a_t +=0.05
+    basic_at = [attack.basic_attack() for i in range(2)]
+    if time_a_t >=1:
+        game_world.add_object(attack.thunder(), 1)
+        time_a_t=0
 
     if time_m_s >= 5:
         skeleton_many = [enemies.skeleton_many() for i in range(50)]
@@ -103,11 +104,12 @@ def update():
 
     if time_a>=1:
         time_a=0
-        game_world.add_object(attack.basic_attack(), 1)
+        game_world.add_objects(basic_at, 1)
 
     if time_s >= 1:
         time_s=0
         game_world.add_object(enemies.skeleton(), 3)
+        game_world.add_object(enemies.bat(),3)
     if time_z >= 1:
         game_world.add_object(enemies.zombie(), 3)
         time_z = 0

@@ -46,5 +46,3 @@ class my_player:
 
         if self.HP<0:
             framework.change_state(gameover)
-        #self.player_x += self.dx
-        #self.player_y += self.dy
