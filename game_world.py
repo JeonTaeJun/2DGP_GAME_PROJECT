@@ -2,8 +2,9 @@
 # layer 1: at
 # layer 2: player
 # layer 3: monster
+# layer 4: font
 
-objects = [[], [], [], []]
+objects = [[], [], [], [],[]]
 def add_object(o, layer):
     objects[layer].append(o)
 

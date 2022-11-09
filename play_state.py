@@ -7,6 +7,8 @@ import gameover
 import game_world
 import collide
 import attack
+import time_mgr
+import ui
 def handle_events(): # dir=3 왼쪽 dir =4 오른쪽
 
     global player
@@ -55,6 +57,8 @@ def enter():
     global z_list_size
     global MAPS
     global skeleton_many
+    global font_time
+    global main_time
     if player == None:
         player = my_ch.my_player()
 
@@ -64,10 +68,13 @@ def enter():
         MAPS[i].y = maplist[i][1]
     for i in range(9):
         game_world.add_object(MAPS[i],0)
+    main_time=0
+    game_world.add_object(ui.hp_bar(),4)
     game_world.add_object(player,2)
     game_world.add_object(attack.circle_attack(),1)
     game_world.add_object(enemies.zombie(), 3)
     game_world.add_object(enemies.skeleton(), 3)
+    game_world.add_object(time_mgr.main_timer(), 4)
 
 def exit():
     game_world.clear()
@@ -75,21 +82,22 @@ def exit():
 
 time_s = 0
 time_z = 0
-time_a=0
+time_a_b = 0
 time_m_s =0
 time_a_t =0
 def update():
     global time_s
     global time_z
-    global time_a
+    global time_a_b
     global time_m_s
     global skeleton_many
     global zombies
     global skeleton
     global time_a_t
+
     time_s += 0.04
     time_z += 0.04
-    time_a += 0.05
+    time_a_b += 0.2
     time_m_s += 0.01
     time_a_t +=0.05
     basic_at = [attack.basic_attack() for i in range(2)]
@@ -102,8 +110,8 @@ def update():
         time_m_s=0
         game_world.add_objects(skeleton_many, 3)
 
-    if time_a>=1:
-        time_a=0
+    if time_a_b>=1:
+        time_a_b=0
         game_world.add_objects(basic_at, 1)
 
     if time_s >= 1:
