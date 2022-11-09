@@ -14,7 +14,7 @@ class my_player:
         self.frame = 0
         self.HP = 100
     def get_bb(self):
-        return self.player_x-10,self.player_y-15,self.player_x+10,self.player_y+15
+        return self.player_x-15,self.player_y-20,self.player_x+15,self.player_y+20
     def draw(self):
 
         if self.dx==0 and self.dy==0:

@@ -23,7 +23,7 @@ class skeleton_many :
                          random.randint(-200,0)
         self.dx = 0
         self.dy = 0
-        self.speed = 15
+        self.speed = 20
         self.HP = 15
         self.power = 5
         self.time_die =0
@@ -77,6 +77,7 @@ class skeleton :
         self.dy = 0
         self.HP = 15
         self.power = 5
+        self.speed = 5
         self.time_die =0
         self.die_state=False
         if skeleton.image == None :
@@ -98,8 +99,8 @@ class skeleton :
         self.dx, self.dy = (( play_state.player.player_x - self.x) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2),
                             (play_state.player.player_y - self.y) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2))
 
-        self.x += self.dx * 2
-        self.y += self.dy * 2
+        self.x += self.dx * self.speed
+        self.y += self.dy * self.speed
         self.x -= play_state.player.dx
         self.y -= play_state.player.dy
         if 640 > self.x:
@@ -127,6 +128,7 @@ class zombie:
         self.dy =0
         self.HP= 30
         self.power = 10
+        self.speed=4
         self.time_die =0
         self.die_state=False
         if zombie.image == None:
@@ -146,8 +148,8 @@ class zombie:
         self.dx, self.dy = ((play_state.player.player_x-self.x)/math.sqrt((play_state.player.player_x-self.x)** 2+(play_state.player.player_y-self.y) ** 2),
                           (play_state.player.player_y-self.y)/math.sqrt((play_state.player.player_x-self.x)** 2+(play_state.player.player_y-self.y) ** 2))
 
-        self.x += self.dx*2
-        self.y += self.dy*2
+        self.x += self.dx*self.speed
+        self.y += self.dy*self.speed
         self.x -= play_state.player.dx
         self.y -= play_state.player.dy
         if 640 > self.x:
@@ -175,7 +177,8 @@ class bat :
         self.dx = 0
         self.dy = 0
         self.HP = 150
-        self.power = 20
+        self.power = 10
+        self.speed=3
         self.time_die =0
         self.die_state=False
         if bat.image == None :
@@ -197,8 +200,8 @@ class bat :
         self.dx, self.dy = (( play_state.player.player_x - self.x) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2),
                             (play_state.player.player_y - self.y) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2))
 
-        self.x += self.dx * 2
-        self.y += self.dy * 2
+        self.x += self.dx * self.speed
+        self.y += self.dy * self.speed
         self.x -= play_state.player.dx
         self.y -= play_state.player.dy
         if 640 > self.x:
