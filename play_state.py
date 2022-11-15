@@ -9,6 +9,7 @@ import collide
 import attack
 import time_mgr
 import ui
+import store
 def handle_events(): # dir=3 왼쪽 dir =4 오른쪽
 
     global player
@@ -18,7 +19,7 @@ def handle_events(): # dir=3 왼쪽 dir =4 오른쪽
             framework.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
-                framework.quit()
+                framework.push_state(store)
             elif event.key == SDLK_LEFT:
                 player.dx = -10
                 player.dir = 3
@@ -71,6 +72,7 @@ def enter():
     main_time=0
     game_world.add_object(ui.hp_bar(),4)
     game_world.add_object(player,2)
+
     game_world.add_object(attack.circle_attack(),1)
     game_world.add_object(enemies.zombie(), 3)
     game_world.add_object(enemies.skeleton(), 3)
@@ -80,27 +82,36 @@ def exit():
     game_world.clear()
 
 
-time_s = 0
-time_z = 0
+time_mon_s = 0
+time_mon_z = 0
+time_mon_b = 0
 time_a_b = 0
 time_m_s =0
 time_a_t =0
 def update():
-    global time_s
-    global time_z
+    global time_mon_s
+    global time_mon_z
+    global time_mon_b
     global time_a_b
     global time_m_s
     global skeleton_many
     global zombies
     global skeleton
     global time_a_t
-
-    time_s += 0.04
-    time_z += 0.04
-    time_a_b += 0.2
+    #몬스터 타이머
+    time_mon_b += 0.01
+    time_mon_s += 0.04
+    time_mon_z += 0.04
     time_m_s += 0.01
-    time_a_t +=0.05
+    #공격 타이머
+    if game_world.objects[2][0].at_1:
+        time_a_b += 0.2
+    if game_world.objects[2][0].at_2:
+        time_a_t += 0.05
     basic_at = [attack.basic_attack() for i in range(2)]
+
+    #======================================================================
+
     if time_a_t >=1:
         game_world.add_object(attack.thunder(), 1)
         time_a_t=0
@@ -114,13 +125,15 @@ def update():
         time_a_b=0
         game_world.add_objects(basic_at, 1)
 
-    if time_s >= 1:
-        time_s=0
+    if time_mon_s >= 1:
+        time_mon_s=0
         game_world.add_object(enemies.skeleton(), 3)
-        game_world.add_object(enemies.bat(),3)
-    if time_z >= 1:
+    if time_mon_z >= 1:
         game_world.add_object(enemies.zombie(), 3)
-        time_z = 0
+        time_mon_z = 0
+    if time_mon_b >=1:
+        game_world.add_object(enemies.bat(), 3)
+        time_mon_b =0
 
     for game_Object in game_world.all_objects():
         game_Object.update()

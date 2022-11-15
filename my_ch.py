@@ -13,6 +13,13 @@ class my_player:
         self.dir =0
         self.frame = 0
         self.HP = 100
+        #attack bool check
+
+        self.at_1 = False
+        self.at_2 = False
+        self.at_3 = False
+        self.at_4 = False
+
     def get_bb(self):
         return self.player_x-15,self.player_y-20,self.player_x+15,self.player_y+20
     def draw(self):

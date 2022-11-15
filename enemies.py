@@ -196,7 +196,7 @@ class bat :
             self.die_image.clip_draw(0, 0, 81, 81, self.x, self.y, 50, 60)
         #draw_rectangle(*self.get_bb())
 
-    def update(self):#, player_x, player_y):
+    def update(self):
         self.dx, self.dy = (( play_state.player.player_x - self.x) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2),
                             (play_state.player.player_y - self.y) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2))
 
@@ -210,7 +210,7 @@ class bat :
             self.direction = 0
         self.frame = (self.frame + 1) % 6
 
-        if self.HP<0:
+        if self.HP <= 0:
             self.die_state=True
             self.time_die+=1
             if self.time_die>5:
