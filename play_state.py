@@ -137,7 +137,9 @@ def update():
 
     for game_Object in game_world.all_objects():
         game_Object.update()
-
+def draw_world():
+    for game_Object in game_world.all_objects():
+        game_Object.draw()
 def draw():
     clear_canvas()
     for game_Object in game_world.all_objects():

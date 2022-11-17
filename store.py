@@ -39,8 +39,8 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    play_state.draw()
-    image.draw(640,500,640,500)
+    play_state.draw_world()
+    image.draw(640,500,1280,1024)
     update_canvas()
 
 def update():
