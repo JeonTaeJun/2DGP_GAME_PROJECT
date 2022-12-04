@@ -32,6 +32,7 @@ class skeleton_many :
             skeleton_many.image = load_image('skelton.png')
         if skeleton_many.die_image == None:
             skeleton_many.die_image = load_image('die.png')
+        self.die_sound=load_wav("die.wav")
     def get_bb(self):
         return self.x-15, self.y-15, self.x+15, self.y+15
 
@@ -40,7 +41,6 @@ class skeleton_many :
             self.image.clip_draw(self.frame * 30, self.direction * 56, 30, 56, self.x, self.y, 50, 60)
         elif self.die_state == True:
             self.die_image.clip_draw(0, 0, 81, 81, self.x, self.y, 50, 60)
-        #draw_rectangle(*self.get_bb())
 
     def update(self):
         self.y += self.speed
@@ -52,16 +52,16 @@ class skeleton_many :
             self.direction = 1
         self.frame = (self.frame + 1) % 6
 
+        if self.y > 1300:
+            game_world.remove_object(self)
+
         if self.HP < 0:
             if self.HP < 0:
                 self.die_state = True
                 self.time_die += 1
                 if self.time_die > 5:
+                    self.die_sound.play(1)
                     game_world.remove_object(self)
-
-        if self.y > 1300:
-            game_world.remove_object(self)
-
 
 
 class skeleton :
@@ -84,7 +84,8 @@ class skeleton :
             skeleton.image = load_image('skelton.png')
         if skeleton.die_image == None :
             skeleton.die_image = load_image('die.png')
-
+        self.die_sound =load_wav("die.wav")
+        self.die_sound.set_volume(80)
     def get_bb(self):
         return self.x-15, self.y-15, self.x+15, self.y+15
 
@@ -101,8 +102,10 @@ class skeleton :
 
         self.x += self.dx * self.speed
         self.y += self.dy * self.speed
+
         self.x -= play_state.player.dx
         self.y -= play_state.player.dy
+
         if 640 > self.x:
             self.direction = 0
         elif 640 < self.x:
@@ -113,6 +116,7 @@ class skeleton :
             self.die_state=True
             self.time_die+=1
             if self.time_die>5:
+                self.die_sound.play(1)
                 game_world.remove_object(self)
 
 class zombie:
@@ -135,6 +139,7 @@ class zombie:
             zombie.image = load_image('zombie1.png')
         if zombie.die_image == None :
             zombie.die_image = load_image('die.png')
+        self.die_sound = load_wav("die.wav")
     def draw(self):
         if self.die_state == False:
             self.image.clip_draw(self.frame*31,self.direction*73,31,73,self.x,self.y,60,80)
@@ -163,6 +168,7 @@ class zombie:
                 self.die_state = True
                 self.time_die += 1
                 if self.time_die > 5:
+                    self.die_sound.play(1)
                     game_world.remove_object(self)
 
 class bat :
@@ -185,7 +191,7 @@ class bat :
             bat.image = load_image('bat.png')
         if bat.die_image == None :
             bat.die_image = load_image('die.png')
-
+        self.die_sound = load_wav("die.wav")
     def get_bb(self):
         return self.x-20, self.y-30, self.x+20, self.y+30
 
@@ -214,4 +220,5 @@ class bat :
             self.die_state=True
             self.time_die+=1
             if self.time_die>5:
+                self.die_sound.play(1)
                 game_world.remove_object(self)

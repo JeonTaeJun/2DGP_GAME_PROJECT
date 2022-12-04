@@ -78,6 +78,9 @@ def enter():
     game_world.add_object(enemies.skeleton(), 3)
     game_world.add_object(time_mgr.main_timer(), 4)
 
+    # sound
+    sound_main = load_music("main.ogg")
+
 def exit():
     game_world.clear()
 
@@ -88,6 +91,7 @@ time_mon_b = 0
 time_a_b = 0
 time_m_s =0
 time_a_t =0
+time_a_rt =0
 def update():
     global time_mon_s
     global time_mon_z
@@ -98,6 +102,7 @@ def update():
     global zombies
     global skeleton
     global time_a_t
+    global time_a_rt
     #몬스터 타이머
     time_mon_b += 0.01
     time_mon_s += 0.04
@@ -108,15 +113,22 @@ def update():
         time_a_b += 0.2
     if game_world.objects[2][0].at_2:
         time_a_t += 0.05
+    if game_world.objects[2][0].at_4:
+        time_a_rt += 0.03
     basic_at = [attack.basic_attack() for i in range(2)]
 
     #======================================================================
+
+    if time_a_rt >=1:
+        game_world.add_object(attack.rand_thunder(), 1)
+        time_a_rt=0
+
 
     if time_a_t >=1:
         game_world.add_object(attack.thunder(), 1)
         time_a_t=0
 
-    if time_m_s >= 5:
+    if time_m_s >= 2:
         skeleton_many = [enemies.skeleton_many() for i in range(50)]
         time_m_s=0
         game_world.add_objects(skeleton_many, 3)
