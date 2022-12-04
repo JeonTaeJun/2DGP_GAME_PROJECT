@@ -5,6 +5,10 @@ import play_state
 import collide
 import game_world
 
+def random_deg():
+    global deg
+    deg = random.randint(0,360)
+    return deg
 class font:
     image = None
     def __init__(self,monx,mony,damage):
@@ -140,3 +144,36 @@ class thunder:
 
             self.frame+=1
             self.timer += 0.2
+class rand_thunder:
+    def __init__(self):
+        self.deg = random_deg()
+        self.image = load_image('random_thunder.png')
+        self.power = 40
+        self.x ,self.y = play_state.player.player_x+(math.cos(math.radians(self.deg))*300),\
+                         play_state.player.player_y+(math.sin(math.radians(self.deg))*300)
+        self.timer = 0
+        self.frame = 0
+
+    def get_bb(self):
+            return self.x - 80, self.y - 220, self.x + 80, self.y - 100
+
+    def draw(self):
+        if game_world.objects[2][0].at_4:
+            self.image.clip_draw(700* self.frame, 0, 700, 700, self.x, self.y, 400, 400)
+            draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
+
+    def update(self):
+        if game_world.objects[2][0].at_4:
+            self.x -= play_state.player.dx
+            self.y -= play_state.player.dy
+            if self.timer > 0.6:
+                game_world.remove_object(self)
+
+            for i in range(len(game_world.objects[3])):
+                if collide.collide_player(self, game_world.objects[3][i]):
+                    game_world.add_object(font(game_world.objects[3][i].x, game_world.objects[3][i].y, self.power), 4)
+                    game_world.objects[3][i].HP -= self.power
+
+            self.frame = (self.frame + 1) % 4
+            self.timer += 0.15

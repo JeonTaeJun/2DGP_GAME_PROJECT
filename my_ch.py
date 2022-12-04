@@ -13,8 +13,12 @@ class my_player:
         self.dir =0
         self.frame = 0
         self.HP = 100
-        #attack bool check
 
+        #sound
+        self.sound_check=True
+        self.sound_main=load_music("main.ogg")
+
+        #attack bool check
         self.at_1 = False
         self.at_2 = False
         self.at_3 = False
@@ -41,8 +45,10 @@ class my_player:
                 self.character.clip_draw(self.frame * 28, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
             else:
                 self.character.clip_draw(self.frame * 28, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
-        draw_rectangle(*self.get_bb())
-
+        ##draw_rectangle(*self.get_bb())
+        if self.sound_check:
+            self.sound_main.play(5)
+            self.sound_check = False
     def update(self):
         self.frame = (self.frame + 1) % 7
 
@@ -52,4 +58,5 @@ class my_player:
         print(self.HP)
 
         if self.HP<0:
+            self.sound_main.stop()
             framework.change_state(gameover)
