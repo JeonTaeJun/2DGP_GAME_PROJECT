@@ -3,6 +3,7 @@ import attack
 import my_ch
 import game_world
 import framework
+import game_completed
 from pico2d import*
 class main_timer:
     def __init__(self):
@@ -15,8 +16,8 @@ class main_timer:
             self.minute+=1
             self.time=0
 
-        if self.minute==5:
-            exit()
+        if self.minute == 1:
+            framework.change_state(game_completed)
 
         pass
     def draw(self):

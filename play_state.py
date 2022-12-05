@@ -48,6 +48,8 @@ MAP = None
 skeleton = None
 zombie = None
 skeleton_many = None
+sound_check = None
+sound_main= None
 #at = None
 open_canvas()
 def enter():
@@ -60,6 +62,8 @@ def enter():
     global skeleton_many
     global font_time
     global main_time
+    global sound_check
+    global sound_main
     if player == None:
         player = my_ch.my_player()
 
@@ -79,6 +83,7 @@ def enter():
     game_world.add_object(time_mgr.main_timer(), 4)
 
     # sound
+    sound_check = True
     sound_main = load_music("main.ogg")
 
 def exit():
@@ -138,17 +143,18 @@ def update():
         game_world.add_objects(basic_at, 1)
 
     if time_mon_s >= 1:
-        time_mon_s=0
+        time_mon_s = 0
         game_world.add_object(enemies.skeleton(), 3)
     if time_mon_z >= 1:
         game_world.add_object(enemies.zombie(), 3)
         time_mon_z = 0
-    if time_mon_b >=1:
+    if time_mon_b >= 1:
         game_world.add_object(enemies.bat(), 3)
-        time_mon_b =0
+        time_mon_b = 0
 
     for game_Object in game_world.all_objects():
         game_Object.update()
+
 def draw_world():
     for game_Object in game_world.all_objects():
         game_Object.draw()
@@ -157,6 +163,11 @@ def draw():
     for game_Object in game_world.all_objects():
         game_Object.draw()
 
+    global sound_check
+    global sound_main
+    if sound_check:
+        sound_main.play(3)
+        sound_check = False
     update_canvas()
 def pause():
     pass

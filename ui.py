@@ -1,7 +1,8 @@
 from pico2d import*
 import my_ch
 import play_state
-
+import framework
+import gameover
 class hp_bar:
     def __init__(self):
         self.image=load_image('hpbar.png')

@@ -76,7 +76,7 @@ class basic_attack:
 class circle_attack:
     def __init__(self):
         self.attack = load_image('circleat.png')
-        self.power = 5
+        self.power = 10
         self.x = 640
         self.y = 512
         self.timer = 0

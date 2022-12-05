@@ -25,7 +25,7 @@ class skeleton_many :
         self.dy = 0
         self.speed = 20
         self.HP = 15
-        self.power = 5
+        self.power = 2
         self.time_die =0
         self.die_state=False
         if skeleton_many.image == None:
@@ -76,7 +76,7 @@ class skeleton :
         self.dx = 0
         self.dy = 0
         self.HP = 15
-        self.power = 5
+        self.power = 2
         self.speed = 5
         self.time_die =0
         self.die_state=False
@@ -131,7 +131,7 @@ class zombie:
         self.dx = 0
         self.dy =0
         self.HP= 30
-        self.power = 10
+        self.power = 4
         self.speed=4
         self.time_die =0
         self.die_state=False
@@ -182,9 +182,9 @@ class bat :
                          play_state.player.player_y+(math.sin(math.radians(self.deg))*650)
         self.dx = 0
         self.dy = 0
-        self.HP = 150
+        self.HP = 100
         self.power = 10
-        self.speed=3
+        self.speed=5
         self.time_die =0
         self.die_state=False
         if bat.image == None :

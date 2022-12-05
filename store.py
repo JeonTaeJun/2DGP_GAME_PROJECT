@@ -3,6 +3,7 @@ from pico2d import*
 import framework
 import play_state
 import game_world
+import title
 def enter():
     global image
     image = load_image('store.png')
@@ -33,6 +34,8 @@ def handle_events():
             elif event.key == SDLK_4:
                 play_state.player.at_4 = True
                 pass
+            elif event.key == SDLK_r:
+                framework.change_state(title)
             elif event.key == SDLK_ESCAPE:
                 framework.pop_state()
 

@@ -3,6 +3,8 @@ import collide
 import game_world
 import framework
 import gameover
+import title
+import play_state
 class my_player:
     def __init__(self):
         self.character = load_image('characters_.png')
@@ -19,7 +21,7 @@ class my_player:
         self.sound_main=load_music("main.ogg")
 
         #attack bool check
-        self.at_1 = False
+        self.at_1 = True
         self.at_2 = False
         self.at_3 = False
         self.at_4 = False
@@ -46,17 +48,17 @@ class my_player:
             else:
                 self.character.clip_draw(self.frame * 28, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
         ##draw_rectangle(*self.get_bb())
-        if self.sound_check:
-            self.sound_main.play(5)
-            self.sound_check = False
     def update(self):
         self.frame = (self.frame + 1) % 7
 
         for i in range(len(game_world.objects[3])):
             if collide.collide_player(self,game_world.objects[3][i]):
                 self.HP-=game_world.objects[3][i].power
-        print(self.HP)
 
-        if self.HP<0:
-            self.sound_main.stop()
-            framework.change_state(gameover)
+        if self.HP <= 0:
+            framework.change_state(title)
+            self.HP = 100
+            self.at_2 = False
+            self.at_3 = False
+            self.at_4 = False
+            play_state.sound_main.stop()

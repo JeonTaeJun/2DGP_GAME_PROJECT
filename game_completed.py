@@ -2,12 +2,12 @@ from pico2d import *
 
 import framework
 import title
-import play_state
+
 image = None
 
 def enter():
     global image
-    image = load_image('gameOver.png')
+    image = load_image('game_completed.png')
     # fill here
     pass
 
@@ -25,7 +25,7 @@ def handle_events():
             framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE :
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             framework.change_state(title)
 
 def draw():
