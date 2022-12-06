@@ -6,6 +6,7 @@ import collide
 import game_world
 import play_state
 import Map
+import my_ch
 
 
 deg=None
@@ -75,7 +76,16 @@ class skeleton :
                          play_state.player.player_y+(math.sin(math.radians(self.deg))*650)
         self.dx = 0
         self.dy = 0
-        self.HP = 15
+        if game_world.objects[4][0].sec >= 30 and game_world.objects[4][0].min ==0 :
+            self.HP = 20
+            print(self.HP)
+        elif game_world.objects[4][0].min == 1 and game_world.objects[4][0].sec < 30:
+            self.HP = 25
+            print(self.HP)
+        elif game_world.objects[4][0].min == 1 and game_world.objects[4][0].sec > 30:
+            self.HP = 35
+        elif game_world.objects[4][0].sec <= 30 and game_world.objects[4][0].min == 0 :
+            self.HP = 15
         self.power = 2
         self.speed = 5
         self.time_die =0
@@ -86,6 +96,9 @@ class skeleton :
             skeleton.die_image = load_image('die.png')
         self.die_sound =load_wav("die.wav")
         self.die_sound.set_volume(80)
+
+        #시간이 지남에 따라 강해짐
+        self.upgrade=0
     def get_bb(self):
         return self.x-15, self.y-15, self.x+15, self.y+15
 
@@ -97,6 +110,9 @@ class skeleton :
         #draw_rectangle(*self.get_bb())
 
     def update(self):#, player_x, player_y):
+
+
+        print(self.HP)
         self.dx, self.dy = (( play_state.player.player_x - self.x) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2),
                             (play_state.player.player_y - self.y) / math.sqrt((play_state.player.player_x - self.x) ** 2 + (play_state.player.player_y - self.y) ** 2))
 
@@ -130,9 +146,21 @@ class zombie:
                          play_state.player.player_y+(math.sin(math.radians(self.deg))*650)
         self.dx = 0
         self.dy =0
-        self.HP= 30
+        if game_world.objects[4][0].sec >= 30 and game_world.objects[4][0].min ==0 :
+            self.HP = 40
+            self.speed = 4
+            print(self.HP)
+        elif game_world.objects[4][0].min == 1 and game_world.objects[4][0].sec < 30:
+            self.HP = 40
+            self.speed = 5
+            print(self.HP)
+        elif game_world.objects[4][0].min == 1 and game_world.objects[4][0].sec > 30:
+            self.HP = 40
+            self.speed = 6
+        elif game_world.objects[4][0].sec <= 30 and game_world.objects[4][0].min == 0 :
+            self.HP = 30
+            self.speed = 4
         self.power = 4
-        self.speed=4
         self.time_die =0
         self.die_state=False
         if zombie.image == None:
@@ -182,9 +210,21 @@ class bat :
                          play_state.player.player_y+(math.sin(math.radians(self.deg))*650)
         self.dx = 0
         self.dy = 0
-        self.HP = 100
+        if game_world.objects[4][0].sec >= 30 and game_world.objects[4][0].min == 0 :
+            self.HP = 120
+            self.speed = 5
+            print(self.HP)
+        elif game_world.objects[4][0].min == 1 and game_world.objects[4][0].sec < 30:
+            self.HP = 120
+            self.speed = 7
+            print(self.HP)
+        elif game_world.objects[4][0].min == 1 and game_world.objects[4][0].sec > 30:
+            self.HP = 150
+            self.speed = 7
+        elif game_world.objects[4][0].sec <= 30 and game_world.objects[4][0].min == 0 :
+            self.HP = 100
+            self.speed = 5
         self.power = 10
-        self.speed=5
         self.time_die =0
         self.die_state=False
         if bat.image == None :

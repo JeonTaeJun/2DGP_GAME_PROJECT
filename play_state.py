@@ -30,6 +30,10 @@ def handle_events(): # dir=3 왼쪽 dir =4 오른쪽
                 player.dy = 10
             elif event.key == SDLK_DOWN:
                 player.dy = -10
+            elif event.key == SDLK_g:
+                game_world.objects[2][0].GOD = True
+            elif event.key == SDLK_g:
+                game_world.objects[2][0].GOD = False
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_UP:
                 player.dy = 0
@@ -74,19 +78,21 @@ def enter():
     for i in range(9):
         game_world.add_object(MAPS[i],0)
     main_time=0
+    game_world.add_object(time_mgr.main_timer(), 4)
     game_world.add_object(ui.hp_bar(),4)
     game_world.add_object(player,2)
 
     game_world.add_object(attack.circle_attack(),1)
     game_world.add_object(enemies.zombie(), 3)
     game_world.add_object(enemies.skeleton(), 3)
-    game_world.add_object(time_mgr.main_timer(), 4)
 
     # sound
     sound_check = True
     sound_main = load_music("main.ogg")
 
 def exit():
+    game_world.objects[2][0].HP = 100
+    game_world.objects[2][0].sound_main.stop()
     game_world.clear()
 
 
