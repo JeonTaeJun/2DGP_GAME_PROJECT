@@ -82,11 +82,10 @@ class circle_attack:
         self.timer = 0
 
     def get_bb(self):
-        return self.x - 55, self.y - 55, self.x + 55, self.y + 55
+        return self.x - 65, self.y - 65, self.x + 65, self.y + 65
     def draw(self):
         if game_world.objects[2][0].at_3:
-            self.attack.clip_draw(0, 0, 112, 112, self.x, self.y,150,150)
-        #draw_rectangle(*self.get_bb())
+            self.attack.clip_draw(0, 0, 112, 112, self.x, self.y,170,170)
 
     def update(self):
         if game_world.objects[2][0].at_3:
@@ -97,12 +96,12 @@ class circle_attack:
                         game_world.objects[3][i].HP -= self.power
                         self.timer = 0
 
-        self.timer += 0.1
+        self.timer += 0.2
 
 class thunder:
     def __init__(self):
         self.image = load_image('thunder1.png')
-        self.power = 5
+        self.power = 8
         self.x = 640
         self.y = 512
         self.timer = 0
@@ -160,8 +159,6 @@ class rand_thunder:
     def draw(self):
         if game_world.objects[2][0].at_4:
             self.image.clip_draw(700* self.frame, 0, 700, 700, self.x, self.y, 400, 400)
-            draw_rectangle(*self.get_bb())
-        # draw_rectangle(*self.get_bb())
 
     def update(self):
         if game_world.objects[2][0].at_4:

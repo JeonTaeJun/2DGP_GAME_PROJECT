@@ -26,6 +26,8 @@ class my_player:
         self.at_3 = False
         self.at_4 = False
 
+        self.GOD = False #무적모드
+
     def get_bb(self):
         return self.player_x-15,self.player_y-20,self.player_x+15,self.player_y+20
     def draw(self):
@@ -49,6 +51,8 @@ class my_player:
                 self.character.clip_draw(self.frame * 28, self.dir * 35, 27, 35, self.player_x, self.player_y, 60, 60)
         ##draw_rectangle(*self.get_bb())
     def update(self):
+        if self.GOD == True:
+            self.HP =100
         self.frame = (self.frame + 1) % 7
 
         for i in range(len(game_world.objects[3])):
@@ -57,8 +61,7 @@ class my_player:
 
         if self.HP <= 0:
             framework.change_state(title)
-            self.HP = 100
             self.at_2 = False
             self.at_3 = False
             self.at_4 = False
-            play_state.sound_main.stop()
+
